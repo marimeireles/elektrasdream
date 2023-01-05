@@ -8,7 +8,8 @@
 
 .title {
   font-size: 100px;
-  color: #FA93E5;
+  text-shadow: 2px 4px #FA93E5;
+  color: #FACDE5;
   font-weight: bold;
 }
 
