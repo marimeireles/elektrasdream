@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" id="sky">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <title>elektra's dream</title>
@@ -16,6 +16,7 @@
 
   <script src="https://cdn.jsdelivr.net/npm/p5@1.5.0/lib/p5.js"></script>
 
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
   <py-config>
   [splashscreen]
@@ -31,13 +32,13 @@
   <script>
     function setup() {}
   </script>
-  <body class="background">
+  <h1 class="title text-center">𝑒𝓁𝑒𝓀𝓉𝓇𝒶'𝓈 𝒹𝓇𝑒𝒶𝓂</h1>
+  <body class="background" id="sky">
     <div class="container">
-      <h1 class="title text-center">𝑒𝓁𝑒𝓀𝓉𝓇𝒶'𝓈 𝒹𝓇𝑒𝒶𝓂</h1>
       <br><br><br><br><br><br>
       <!-- pyscript + p5js -->
         <div class="row">
-            <div class="col-md-5 card">
+            <div class="col-md-5 card card-margin">
               <py-repl>
 from pyp5js import *
 
@@ -48,10 +49,26 @@ pyp5js.ellipse(50,50,80,80)
               </py-repl>
             </div>
             <div class="col-md-2"></div>
-            <div class="col-md-5 card align-items-center p5-output">
-              <main></main>
+            <div class="col-md-5 card card-margin align-items-center p5-output">
+              <main style="margin-top: 6px;"></main>
             </div>
         </div>
     </div>
+        <footer class="row align-items-center">
+          <div class="col-md-2"></div>
+          <div class="col-md-8 docker align-items-center ">
+              <div class="container ">
+                <div class="row">
+                  <div class="col-md-1"></div>
+                  <div class="col-md-3"><a href="github.com/marimeireles/elektrasdream/"><i class="fa-solid fa-code fa-icon text-center circle"></i></a></div>
+                  <div class="col-md-1"></div>
+                  <div class="col-md-3"><i class="fa-solid fa-book fa-icon text-center circle"></i></div>
+                  <div class="col-md-1"></div>
+                  <div class="col-md-3"><a href="psychonautgirl.space/"> <i class="fa-solid fa-hat-wizard fa-icon text-center circle"></i></a></div>
+                </div>
+              </div>
+          </div>
+          <div class="col-md-2"></div>
+        </footer>
   </body>
 </html>
