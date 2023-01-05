@@ -1,0 +1,73 @@
+#py-internal-0-1 {
+  display: none;
+}
+
+.background {
+    background-color: #A2FAF4;
+}
+
+.title {
+  font-size: 100px;
+  color: #FA93E5;
+  font-weight: bold;
+}
+
+/*
+cloud inspiration
+https://lauryndbrown.github.io/2017/06/08/creating-clouds-in-css.html
+*/
+.cloud {
+  position:relative;
+  width:175px;
+  height:60px;
+  background:#ECEFF1;
+  box-shadow: 10px 10px rgba(0,0,0,0.2);
+  border-radius:100px;
+}
+
+.cloud::after, .cloud::before{
+  content:"";
+  position:relative;
+  display:inline-block;
+  background:inherit;
+  border-radius:inherit;
+}
+
+.cloud:before{
+  width:90px;
+  height:90px;
+  top: -35px;
+  left:65px;
+}
+
+.cloud:after{
+  width:50px;
+  height:50px;
+  top:-110px;
+  left:25px;
+}
+
+.medium-star{
+  position:relative;
+  width:3.5em;
+  font-size:0.4em;
+  background:#ECEFF1;
+}
+
+.medium-star:before{
+  content:"";
+  position:absolute;
+  background:#ECEFF1;
+  width:4em;
+  height:4.15em;
+  transform:rotate(-45deg) skewX(22.5deg) skewY(22.5deg);
+}
+
+.medium-star:after{
+  content:"";
+  position:absolute;
+  background:#ECEFF1;
+  width:4em;
+  height:4.15em;
+  transform:rotate(45deg) skewX(22.5deg) skewY(22.5deg);
+}
