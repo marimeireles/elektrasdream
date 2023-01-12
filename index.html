@@ -4,21 +4,25 @@
   <meta charset="UTF-8">
   <title>elektra's dream</title>
 
-  <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
-  <script defer src="https://pyscript.net/latest/pyscript.js"></script> 
+  <link rel="stylesheet" href="../pyscript/pyscriptjs/build/pyscript.css"/>
+  <script defer src="../pyscript/pyscriptjs/build/pyscript.js"></script>
 
+  <!-- website style -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
   <script defer src="style.js"></script>
   <link rel="stylesheet" href="style.css"/>
 
+  <!-- bootstrap -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
 
+  <!-- p5js -->
   <script src="https://cdn.jsdelivr.net/npm/p5@1.5.0/lib/p5.js"></script>
 
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
   <py-config>
+  packages = ["numpy"]
   [splashscreen]
     autoclose = true
   [[runtimes]]
@@ -26,7 +30,7 @@
     name = "pyodide-0.21.2"
     lang = "python"
   [[fetch]]
-  files = ["./pyp5js.py"]
+    files = ["./pyp5js.py"]
 </py-config>
 </head>
   <script>
@@ -41,11 +45,92 @@
             <div class="col-md-5 card card-margin">
               <py-repl>
 from pyp5js import *
+from random import randrange
 
-pyp5js.createCanvas(300, 300)
+import numpy as np
 
-pyp5js.background(220)
-pyp5js.ellipse(50,50,80,80)
+w = 20
+columns = None
+rows = None
+board = None
+next_board = None
+next = None
+
+def setup():
+    js.window.createCanvas(300, 300)
+    global next, columns, rows, board, next_board
+    # Set simulation frame rate to 10 to avoid flickering
+    js.window.frameRate(1)
+    columns = 10
+    rows = 10
+    # Wacky way to make a 2D array in Python
+    board = np.zeros((columns, rows), dtype=np.object)
+    next_board = np.zeros((columns, rows), dtype=np.object)
+
+    # Fill board randomly
+    for i in range(columns):
+        for j in range(rows):
+            # Lining the edges with 0s
+            if i == 0 or j == 0 or i == columns - 1 or j == rows - 1:
+                board[i][j] = 0
+            # Filling the rest randomly
+            else:
+                board[i][j] = js.window.floor(randrange(2))
+            next = [[0 for j in range(rows)] for i in range(columns)]
+
+def draw():
+    global columns, rows, board, next_board
+    js.window.background(255)
+    generate()
+    a = 0
+    b = 0
+    for i in range(columns):
+        for j in range(rows):
+            if board[i][j] == 1:
+                a += 1
+                js.window.fill(0)
+            else:
+                js.window.fill(255)
+                b += 1
+            js.window.stroke(0)
+            js.window.rect(i * w, j * w, w-1, w-1)
+
+
+# The process of creating the new generation
+def generate():
+    global next, columns, rows, board, next_board
+    # Loop through every spot in our 2D array and check spots neighbors
+    for x in range(1, columns - 1):
+        for y in range(1, rows - 1):
+            # Add up all the states in a 3x3 surrounding grid
+            neighbors = 0
+            for i in range(-1, 2):
+                for j in range(-1, 2):
+                    xi = x+i
+                    yj = y+j
+                    aux = board[xi][yj]
+                    neighbors = neighbors + aux
+
+            # A little trick to subtract the current cell's state since
+            # we added it in the above loop
+            neighbors -= board[x][y]
+            # Rules of Life
+            if board[x][y] == 1 and neighbors < 2:
+                next[x][y] = 0 # Loneliness
+            elif board[x][y] == 1 and neighbors > 3:
+                next[x][y] = 0 # Overpopulation
+            elif board[x][y] == 0 and neighbors == 3:
+                next[x][y] = 1 # Reproduction
+            else:
+                next[x][y] = board[x][y] # Stasis
+
+            temp = board;
+            board = next;
+            next = temp;
+
+setup()
+#while (True):
+#draw()
               </py-repl>
             </div>
             <div class="col-md-2"></div>

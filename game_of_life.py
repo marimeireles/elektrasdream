@@ -86,4 +86,4 @@ def generate():
 
 setup()
 while (True):
-  draw()
+draw()
