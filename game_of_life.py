@@ -1,6 +1,6 @@
+import asyncio
 from pyp5js import *
 from random import randrange
-
 import numpy as np
 
 w = 20
@@ -32,24 +32,26 @@ def setup():
                 board[i][j] = js.window.floor(randrange(2))
             next = [[0 for j in range(rows)] for i in range(columns)]
 
-def draw():
-    global columns, rows, board, next_board
-    js.window.background(255)
-    generate()
-    a = 0
-    b = 0
-    for i in range(columns):
-        for j in range(rows):
-            if board[i][j] == 1:
-                print('black', a)
-                a += 1
-                js.window.fill(0)
-            else:
-                js.window.fill(255)
-                b += 1
-                print('white', b)
-            js.window.stroke(0)
-            js.window.rect(i * w, j * w, w-1, w-1)
+async def draw():
+    while True:
+        global columns, rows, board, next_board
+        js.window.background(255)
+        generate()
+        a = 0
+        b = 0
+        for i in range(columns):
+            for j in range(rows):
+                if board[i][j] == 1:
+                    print('black', a)
+                    a += 1
+                    js.window.fill(0)
+                else:
+                    js.window.fill(255)
+                    b += 1
+                    print('white', b)
+                js.window.stroke(0)
+                js.window.rect(i * w, j * w, w-1, w-1)
+        await asyncio.sleep(1)
 
 
 # The process of creating the new generation
@@ -85,5 +87,4 @@ def generate():
             next = temp;
 
 setup()
-while (True):
-draw()
+asyncio.ensure_future(draw())
